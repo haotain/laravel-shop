@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-static-top">
+  <div class="container">
+    <!-- Branding Image -->
+    <a class="nvabar-brand " href="{{ url('/') }}" >
+      Laravel Shop
+    </a>
+    <button class="navbar-toggler" type="button" data-toggler="collapes" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-lable="Toggle navigation">
+      <span class="navbar-toggles-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- left Side Of Navbar -->
+      <ul class="nvabar-nav mr-auto">
+      </ul>
+
+      <!-- Right Side Of navbar -->
+      <ul class="navbar-nav navbar-right">
+        <!-- Authentication Link -->
+        <li class="nav-item"><a class="nav-link" href="#">登录</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">注册</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
