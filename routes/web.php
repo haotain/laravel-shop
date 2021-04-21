@@ -20,6 +20,10 @@ Route::get('/', 'PagesController@root')->name('root');
 Route::group(['middleware' => ['auth', 'verified']], function() {
     // 收货地址列表
     Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
+
+    // 收货地址页面
+    Route::get('user_addresses/create', 'UserAddressesController@create')->name('user_addressed.create');
+    
 });
 
 // 增加verify 参数 邮箱验证
