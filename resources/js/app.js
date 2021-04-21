@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('./components/SelectDistrict');
 
 window.Vue = require('vue').default;
 
