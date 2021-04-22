@@ -1909,7 +1909,6 @@ var addressData = __webpack_require__(/*! china-area-data/v5/data */ "./node_mod
   methods: {
     setFromValue: function setFromValue(value) {
       // 过滤掉空值
-      console.log(value, 123);
       value = lodash__WEBPACK_IMPORTED_MODULE_0___default().filter(value); // 如果数组长度为0，则将省清空（由于我们定义了观察器，会联动触发将城市和地区清空）
 
       if (value.length === 0) {
@@ -2023,8 +2022,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'UserAddressesCreateAndEdit',
+  props: {
+    initValue: {
+      type: Array,
+      // 格式是数组
+      "default": function _default() {
+        return [];
+      } // 默认是个空数组
+
+    }
+  },
   data: function data() {
     return {
       province: '',
@@ -2041,8 +2052,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     // 把参数 val 保存的值保存导组件数据中
     onDistrictChanged: function onDistrictChanged(val) {
-      console.log(val, this.province);
-
       if (val.length === 3) {
         this.province = val[0];
         this.city = val[1];
@@ -6615,7 +6624,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.form-row > .col[data-v-04cfd256], .form-row > [class*=col-][data-v-04cfd256] {\n    padding-right: 6px;\n    padding-left: 8px;\n}\n.text-md-right[data-v-04cfd256] {\n  padding-left: 30px;\n}\n.select-district[data-v-04cfd256] {\n  margin-bottom: 16px;\n}\n. select-district label[data-v-04cfd256] {\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.form-row > .col[data-v-04cfd256], .form-row > [class*=col-][data-v-04cfd256] {\n    padding-right: 6px;\n    padding-left: 8px;\n}\nspan[data-v-04cfd256] {\n  padding-right:17px;\n}\n.select-district[data-v-04cfd256] {\n  margin-bottom: 16px;\n}\n\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -37820,9 +37829,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "form-row select-district" }, [
-    _c("label", { staticClass: "col-form-label col-sm-2 text-md-right" }, [
-      _vm._v("省市区")
-    ]),
+    _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "col-sm-3" }, [
       _c(
@@ -37951,7 +37958,18 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      { staticClass: "col-form-label col-sm-2 text-md-right" },
+      [_c("span", [_vm._v("省市区")])]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -37980,7 +37998,12 @@ var render = function() {
       _c(
         "div",
         {},
-        [_c("select-district", { on: { change: _vm.onDistrictChanged } })],
+        [
+          _c("select-district", {
+            attrs: { "init-value": _vm.initValue },
+            on: { change: _vm.onDistrictChanged }
+          })
+        ],
         1
       ),
       _vm._v(" "),

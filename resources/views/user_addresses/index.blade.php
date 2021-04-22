@@ -29,8 +29,8 @@
                   <td>{{ $address->zip }}</td>
                   <td>{{ $address->contact_phone }}</td>
                   <td>
-                    <button class="btn btn-primary">修改</button>
-                    <button class="btn btn-danger">删除</button>
+                    <a href="{{ route('user_addresses.edit', ['user_address' => $address->id]) }}" role="button" class="btn btn-primary">修改</a>
+                    <a href="{{ route('user_addresses.edit', ['user_address' => $address->id]) }}" role="button" class="btn btn-primary">删除</a>
                   </td>
                 </tr>
               @endforeach

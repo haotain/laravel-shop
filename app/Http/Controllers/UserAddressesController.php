@@ -42,4 +42,28 @@ class UserAddressesController extends Controller
         ]));
         return redirect()->route('user_addresses.index');
     }
+    /**
+     * 编辑收获地址页面
+     */
+    public function edit(UserAddress $userAddress)
+    {
+        return view('user_addresses.create_and_edit', ['address' => $userAddress]);
+    }
+
+    /**
+     * 保存收获地址
+     */
+    public function update(UserAddressRequest $request, UserAddress $userAddress)
+    {
+        $userAddress->update($request->only([
+            'province',
+            'city',
+            'district',
+            'address',
+            'zip',
+            'contact_name',
+            'contact_phone',
+        ]));
+        return redirect()->route('user_addresses.index');
+    }
 }

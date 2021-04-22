@@ -1,21 +1,28 @@
 @extends('layouts.app')
 
-@section('title', '新增收获地址')
+@section('title', ($address->id ? '修改' : '新增') . '收获地址')
 
 @section('content')
   <div  class="row">
     <div class="col-md-10 offset-lg-1">
       <div class="card">
         <div class="header">
-          <h2 class="text-center">新增收货地址</h2>
+          <h2 class="text-center">{{ $address->id ? '修改': '新增' }}收货地址</h2>
         </div>
         <div class="card-body">
           <!-- 输出后端报错开始 -->
           @include('shared._errors')
           <!-- 输出后端报错结束 -->
-          <user-addresses-create-and-edit>
+          <user-addresses-create-and-edit :init-value="{{ json_encode([old('province', $address->province), old('city', $address->city), old('district', $address->district)]) }}" >
             <template v-slot:default="selectDistrict">
-              <form class="form-horizontal" role="form" action="{{ route('user_addresses.store') }}" method="post">
+
+              @if ($address->id)
+                <form class="form-horizontal" role="form" action="{{ route('user_addresses.update', ['user_address' => $address->id]) }}" method="post">
+                  {{method_field('put')}}
+              @else
+                <form class="form-horizontal" role="form" action="{{ route('user_addresses.store') }}" method="post">
+                {{method_field('post')}}
+              @endif
                 <!-- 引入 csrf token 字段 -->
                 {{ csrf_field() }}
                 <!-- 插入了 3 个隐藏的字段 -->

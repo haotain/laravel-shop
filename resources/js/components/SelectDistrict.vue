@@ -1,6 +1,6 @@
 <template>
   <div class="form-row select-district">
-  <label class="col-form-label col-sm-2 text-md-right">省市区</label>
+  <label class="col-form-label col-sm-2 text-md-right"><span>省市区</span></label>
   <div class="col-sm-3">
     <select class="form-control" v-model="provinceId">
       <option value="">选择省</option>
@@ -53,7 +53,6 @@
     methods: {
       setFromValue(value) {
         // 过滤掉空值
-        console.log(value,123)
         value = _.filter(value);
         // 如果数组长度为0，则将省清空（由于我们定义了观察器，会联动触发将城市和地区清空）
         if (value.length === 0) {
@@ -131,19 +130,17 @@
 </script>
 
 <style scoped>
-.form-row > .col, .form-row > [class*=col-] {
-    padding-right: 6px;
-    padding-left: 8px;
-}
-.text-md-right {
-  padding-left: 30px;
-}
-.select-district {
-  margin-bottom: 16px;
-}
-. select-district label {
+  .form-row > .col, .form-row > [class*=col-] {
+      padding-right: 6px;
+      padding-left: 8px;
+  }
+  span {
+    padding-right:17px;
+  }
+  .select-district {
+    margin-bottom: 16px;
+  }
 
-}
 </style>
 
 
