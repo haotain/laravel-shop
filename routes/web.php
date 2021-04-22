@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('user_addressed/edit/{user_address}', 'UserAddressesController@edit')->name('user_addresses.edit');
     // 编辑收获地址
     Route::put('user_addressed/edit/{user_address}', 'UserAddressesController@update')->name('user_addresses.update');
+    // 删除收获地址
+    Route::delete('user_addressed/distroy/{user_address}', 'UserAddressesController@distroy')->name('user_addresses.delete');
 
 
 });

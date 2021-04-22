@@ -66,4 +66,13 @@ class UserAddressesController extends Controller
         ]));
         return redirect()->route('user_addresses.index');
     }
+
+    /**
+     * 删除收获地址
+     */
+    public function distroy(UserAddress $userAddress)
+    {
+        $userAddress->delete();
+        return redirect()->route('user_addresses.index');
+    }
 }
