@@ -25,11 +25,11 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     // 添加收货地址
     Route::post('user_addresses', 'UserAddressesController@store')->name('user_addresses.store');
     // 编辑收获地址页面
-    Route::get('user_addressed/edit/{user_address}', 'UserAddressesController@edit')->name('user_addresses.edit');
+    Route::get('user_addresses/edit/{user_address}', 'UserAddressesController@edit')->name('user_addresses.edit');
     // 编辑收获地址
-    Route::put('user_addressed/edit/{user_address}', 'UserAddressesController@update')->name('user_addresses.update');
+    Route::put('user_addresses/{user_address}', 'UserAddressesController@update')->name('user_addresses.update');
     // 删除收获地址
-    Route::delete('user_addressed/distroy/{user_address}', 'UserAddressesController@distroy')->name('user_addresses.delete');
+    Route::delete('user_addresses/{user_address}', 'UserAddressesController@destroy')->name('user_addresses.delete');
 
 
 });
