@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -24,6 +25,7 @@ class UsersController extends AdminController
      */
     protected function grid()
     {
+        // dd(debug_backtrace());
         $grid = new Grid(new User());
 
         // $grid->column('id', __('Id'));
