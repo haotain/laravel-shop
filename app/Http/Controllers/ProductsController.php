@@ -14,7 +14,7 @@ class ProductsController extends Controller
         // 创建一个查询器
         $builder = Product::query()->where('on_sale', true);
 
-        // 判断是否又提交 search 参数， 如果有就赋值给 $search 变量
+        // 判断是否有提交 search 参数， 如果有就赋值给 $search 变量
         // search 参数用来模糊搜索商品
         if ($search = $request->input('search', '')) {
             $like = '%' . $search . '%';
@@ -51,5 +51,15 @@ class ProductsController extends Controller
                 'order'  => $order,
             ],
         ]);
+    }
+
+    public function show(Request $request, Product $product)
+    {
+        // 判断商品是否已经上架，如果没有上架则抛出异常
+        if (!$product->on_sale) {
+            throw new \Exception('商品未上架');
+        }
+
+        return view('products.show', ['product' => $product]);
     }
 }
