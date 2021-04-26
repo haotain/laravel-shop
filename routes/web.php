@@ -33,6 +33,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     // 删除收获地址
     Route::delete('user_addresses/{user_address}', 'UserAddressesController@destroy')->name('user_addresses.delete');
 
+    // 收藏商品
+    Route::post('products/{product}/favorite', 'ProductsController@favor')->name('products.favor');
+    // 删除收藏
+    Route::delete('products/{product}/favorite', 'ProductsController@disfavor')->name('products.disfavor');
 
 });
 
