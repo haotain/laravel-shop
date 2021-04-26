@@ -54,10 +54,24 @@
               </div>
             @endforeach
           </div>
-          <div class="float-right">{{ $products->render() }}</div>
+          <div class="float-right">{{ $products->appends($filters)->render() }}</div>
         </div>
       </div>
     </div>
   </div>
 @stop
+
+@section('scriptsAfterJs')
+<script>
+  var filters = {!! json_encode($filters) !!};
+  $(document).ready(function() {
+    $('.search-form input[name=search]').val(filters.search);
+    $('.search-form select[name=order]').val(filters.order);
+
+    $('.search-form select[name=order]').on('change', function() {
+      $('.search-form').submit();
+    })
+  })
+</script>
+@endsection
 
