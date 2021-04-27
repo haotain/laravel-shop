@@ -71,7 +71,8 @@ class ProductsController extends Controller
             return [];
         }
 
-        $user->favoriteProducts()->attach($product);
+        // $user->favoriteProducts()->attach($product);
+        $user->favoriteProducts()->sync($product);
 
         return [];
     }
