@@ -34,7 +34,11 @@
 
               <div class="cart_amount"><label>数量</label><input type="text" class="form-control form-control-sm" value="1"><span>件</span><span class="stock"></span></div>
               <div class="buttons">
-                <button class="btn btn-success btn-favor">❤ 收藏</button>
+                @if($favored)
+                <button class="btn btn-danger btn-disfavor">取消收藏</button>
+                @else
+                  <button class="btn btn-success btn-favor">❤ 收藏</button>
+                @endif
                 <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
               </div>
 
@@ -69,11 +73,81 @@
 @section('scriptsAfterJs')
 <script>
   $(document).ready(function () {
+
     $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
     $('.sku-btn').click(function () {
       $('.product-info .price span').text($(this).data('price'));
       $('.product-info .stock').text('库存：' + $(this).data('stock') + '件');
     });
+
+    // 监听收藏按钮的点击事件
+    $('.btn-favor').click(async function(){
+      // 发起一个 post ajax 请求，请求url 通过后端 route() 函数生成
+      try {
+        await axios.post("{{ route('products.favor', ['product' => $product->id]) }}")
+        // swal('操作成功', '', 'success')
+        //   .then(function () {  // 这里加了一个 then() 方法
+        //       location.reload();
+        //     });
+        location.reload();
+      } catch (err) {
+
+        if (err.response && err.response.status === 401) {
+          swal('请先登录', '', 'error');
+        } else if (error.response && (error.response.data.msg || error.response.data.message)) {
+          // 其他有 msg 或者 message 字段的情况，将 msg 提示给用户
+          swal(error.response.data.msg ? error.response.data.msg : error.response.data.message, '', 'error');
+        } else {
+          // 其他情况应该是系统挂了
+          swal('系统错误', '', 'error');
+        }
+      }
+    })
+    // 取消收藏
+    $('.btn-disfavor').click(async function () {
+
+      await axios.delete("{{ route('products.disfavor', ['product' => $product->id]) }}")
+      // swal('操作成功', '', 'success')
+      //   .then(function () {  // 这里加了一个 then() 方法
+      //       location.reload();
+      //     });
+      location.reload();
+    });
+
+    // 加入购物车按钮点击事件
+    $('.btn-add-to-cart').click(async function() {
+      // 请求加入购物车接口
+      try {
+        await axios.post("{{ route('cart.add') }}", {
+          sku_id: $('label.active input[name=skus]').val(),
+          amount: $('.cart_amount input').val(),
+        })
+        swal('加入购物车成功', '', 'success');
+
+      }  catch (err) {
+        if (err.response.status === 401) {
+          // http 状态码为 401 代表用户未登陆
+          swal('请先登录', '', 'error');
+
+        } else if (err.response.status === 422) {
+          // http 状态码为 422 代表用户输入校验失败
+          var html = '<div>';
+          _.each(err.response.data.errors, function(errors) {
+            _.each(errors, function(error) {
+              html += error + '<br>';
+            })
+          })
+          html += '</div>'
+          swal({content: $(html)[0], icon: 'error'})
+        } else {
+          // 其他情况应该是系统挂了
+          swal('系统错误', '', 'error');
+        }
+      }
+
+    })
+
   });
+
 </script>
 @endsection
