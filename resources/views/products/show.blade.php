@@ -122,7 +122,10 @@
           sku_id: $('label.active input[name=skus]').val(),
           amount: $('.cart_amount input').val(),
         })
-        swal('加入购物车成功', '', 'success');
+        swal('加入购物车成功', '', 'success')
+          .then(function() {
+            location.href = "{{ route('cart.index') }}"
+          });
 
       }  catch (err) {
         if (err.response.status === 401) {

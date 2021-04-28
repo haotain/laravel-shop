@@ -36,7 +36,7 @@
                 </span>
                 <span class="sku_title">{{ $item->productSku->title }}</span>
                 @if(!$item->productSku->product->on_sale)
-                  <span class="waring">该商品已下架</span>
+                  <span class="warning">该商品已下架</span>
                 @endif
               </div>
             </td>
@@ -60,7 +60,7 @@
 @section('scriptsAfterJs')
 <script>
   $(document).ready(function() {
-
+    // 移除
     $('.btn-remove').click(function() {
       // $(this) 可以获取到当前点击的 移除 按钮的 jQuery 对象
       // closest() 方法可以获取到匹配选择器的第一个祖先元素，在这里就是当前点击的 移除 按钮之上的 <tr> 标签
@@ -80,6 +80,19 @@
           .then(function () {
             location.reload();
           })
+      })
+    })
+
+    $('#select-all').change(function() {
+      // 获取单选框的选中状态
+      // prop() 可以知道标签中是否包含某个属性， 当单选框被勾选时，对应的标签会新增一个chekeed 的属性
+      const checked = $(this).prop('checked');
+      console.log(checked);
+      // 获取所有 name=select 并且不带有 disabled 属性的勾选框
+      // 对于已经下架的商品我们不希望对应的勾选框会被选中，因此我们需要加上 :not([disabled]) 这个条件
+      $('input[name=select][type=checkbox]:not([desabled])').each(function() {
+         // 将其勾选状态设为与目标单选框一致
+         $(this).prop('checked', checked);
       })
     })
 
