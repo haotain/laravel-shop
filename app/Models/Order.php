@@ -63,6 +63,7 @@ class Order extends Model
 
     protected $dates = [
         'paid_at',
+        'created_at',
     ];
 
     protected static function boot()

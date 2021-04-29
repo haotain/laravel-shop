@@ -16,7 +16,7 @@ class OrdersController extends Controller
 {
 
     /**
-     * 写入订单表
+     * 用户下单
      */
     public function store(OrderRequest $request)
     {
@@ -74,6 +74,21 @@ class OrdersController extends Controller
         $this->dispatch(new CloseOrder($order, config('app.order_ttl')));
 
         return $order;
+    }
+
+    /**
+     * 订单列表
+     */
+    public function index(Request $request)
+    {
+        $orders = Order::query()
+            // 使用with 预加载
+            ->with('items.product', 'items.productSku')
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate();
+
+        return view('orders.index', ['orders' => $orders]);
     }
 
 }
