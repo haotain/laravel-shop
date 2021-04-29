@@ -70,7 +70,7 @@ class Order extends Model
         parent::boot();
 
         // 监听模型创建事件， 在写入数据库之前触发
-        static::creting(function($model) {
+        static::creating(function($model) {
             // 如果模型的 no 字段为空
             if (!$model->no) {
                 // 调用findAvailableNo 生成订单流水号

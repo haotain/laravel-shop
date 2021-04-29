@@ -13,7 +13,7 @@ class OrderItem extends Model
     protected $dates = ['reviewed_at'];
     public $timestamps = false;
 
-    public function public()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
@@ -27,4 +27,5 @@ class OrderItem extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
 }

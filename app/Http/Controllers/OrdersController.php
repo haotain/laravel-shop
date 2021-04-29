@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\ProductSku;
@@ -10,9 +11,12 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class OrderController extends Controller
+class OrdersController extends Controller
 {
 
+    /**
+     * 写入订单表
+     */
     public function store(OrderRequest $request)
     {
         $user = $request->user();
@@ -25,7 +29,7 @@ class OrderController extends Controller
             // 创建一个订单
             $order = new Order([
                 'address' => [ // 将地址信息放入订单
-                                'address' => $address->$address->full_address,
+                                'address' => $address->full_address,
                                 'zip' => $address->zip,
                                 'contact_name' => $address->contact_name,
                                 'contact_phone' => $address->contact_phone,
@@ -49,9 +53,12 @@ class OrderController extends Controller
                     'price'  => $sku->price,
                 ]);
                 $item->product()->associate($sku->product_id);
-                $items->productSku()->associate($sku);
+                $item->productSku()->associate($sku);
                 $item->save();
                 $totalAmount += $sku->price * $data['amount'];
+                if ($sku->decreaseStock($data['amount']) <= 0) {
+                    throw new InvalidRequestException('该商品库存不足');
+                }
             }
             // 更新订单总金额
             $order->update(['total_amount' => $totalAmount]);
@@ -64,6 +71,6 @@ class OrderController extends Controller
         });
 
         return $order;
-
     }
+
 }

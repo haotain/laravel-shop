@@ -18,7 +18,7 @@ class CreateOrderItemsTable extends Migration
             $table->unsignedBigInteger('order_id')->comment('所属订单 ID');
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->unsignedBigInteger('product_id')->comment('对应商品 ID');
-            $table->foreign('product_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->unsignedBigInteger('product_sku_id')->comment('对应商品 SKU ID');
             $table->unsignedInteger('amount')->comment('数量');
             $table->decimal('price', 10, 2)->comment('单价');

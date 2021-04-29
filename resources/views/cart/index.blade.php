@@ -123,6 +123,57 @@
       })
     })
 
+       // 创建订单按钮点击事件
+       $('.btn-create-order').click(async function() {
+      const req = {
+        address_id: $('#order-form').find('select[name=address]').val(),
+        items: [],
+        remark: $('#order-form').find('textarea[name=remark]').val()
+      }
+      // 遍历 <table> 标签内所有带有 data-id 属性的 <tr> 标签， 也就是购物车中的商品 sku
+      $('table tr[data-id]').each(function() {
+        // 获取当前行的单选框
+        let $checkbox = $(this).find('input[name=select][type=checkbox]');
+        // 如果单选框被禁用或者没有被选中则跳过
+        if ($checkbox.prop('desabled') || !$checkbox.prop('checked')) {
+          return
+        }
+        // 获取当前行中数量输入框
+        let $input = $(this).find('input[name=amount]');
+        // 如果用户将数量设为 0 或者不是一个数字，则也跳过
+        if ($input.val() == 0 || isNaN($input.val())) {
+          return
+        }
+        // 把 sku id 和数量存入请求参数数组中
+        req.items.push({
+          sku_id: $(this).data('id'),
+          amount: $input.val()
+        })
+      })
+
+      try {
+        await axios.post("{{ route('orders.store') }}", req)
+        swal('订单提交成功', '', 'success')
+
+      } catch (err) {
+        if (error.response.status === 422) {
+          // http 状态码 422 代表用户输入校验失败
+          var html = '<div>';
+            _.each(error.response.data.errors, function (errors) {
+              _.each(errors, function (error) {
+                html += error+'<br>';
+              })
+            });
+            html += '</div>';
+            swal({content: $(html)[0], icon: 'error'})
+      } else {
+        // 其他情况应该是系统挂了
+        swal('系统错误', '', 'error');
+      }
+      }
+    })
+
+
   })
 
 </script>
