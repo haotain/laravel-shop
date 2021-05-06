@@ -19,7 +19,7 @@ class Order extends Model
     const REFUND_STATUS_FAILED = 'failed';
 
     // 快递状态
-    const SHIP_STATUS_RENDING = 'pending';
+    const SHIP_STATUS_PENDING = 'pending';
     const SHIP_STATUS_DELIVERED = 'delivered';
     const SHIP_STATUS_RECEVIED = 'recevied';
 
@@ -32,9 +32,9 @@ class Order extends Model
     ];
 
     public static $shipStatusMap = [
-        self::SHIP_STATUS_RENDING   => '未发货',
+        self::SHIP_STATUS_PENDING   => '未发货',
         self::SHIP_STATUS_DELIVERED => '已发货',
-        self::SHIP_STATUS_RENDING   => '已收货',
+        self::SHIP_STATUS_RECEVIED  => '已收货',
     ];
 
     protected $fillable = [
