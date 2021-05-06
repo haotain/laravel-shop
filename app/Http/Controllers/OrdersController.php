@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderReviewed;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\SendReviewRequest;
@@ -82,7 +83,7 @@ class OrdersController extends Controller
         if (!$order->paid_at) {
             throw new InvalidRequestException('该订单未支付，不可评价');
         }
-        return view('orders.review', ['order' => $order->load(['items.porductSku', 'items.product'])]);
+        return view('orders.review', ['order' => $order->load(['items.productSku', 'items.product'])]);
     }
 
     public function sendReview(Order $order, SendReviewRequest $request)
@@ -112,6 +113,7 @@ class OrdersController extends Controller
             }
             // 将订单标记为已评价
             $order->update(['reviewed' => true]);
+            event(new OrderReviewed($order));
         });
         return redirect()->back();
     }
