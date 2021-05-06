@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Encore\Admin\Traits\DefaultDatetimeFormat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, DefaultDatetimeFormat;
 
     // 退货状态
     const REFUND_STATUS_PENDING = 'pending';
@@ -30,7 +31,7 @@ class Order extends Model
         self::REFUND_STATUS_FAILED     => '退款失败',
     ];
 
-    public static $shipStatusMay = [
+    public static $shipStatusMap = [
         self::SHIP_STATUS_RENDING   => '未发货',
         self::SHIP_STATUS_DELIVERED => '已发货',
         self::SHIP_STATUS_RENDING   => '已收货',
