@@ -18,13 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 // 增加verify 参数 邮箱验证
 Auth::routes(['verify' => true]);
-Route::get('alipay', function() {
-    return app('alipay')->web([
-        'out_trade_no' => time(),
-        'total_amount' => '1',
-        'subject' => 'test subject - 测试',
-    ]);
-});
+
 
 // auth 中间件代表需要登录, verified 中间件代表需要经过邮箱验证
 Route::group(['middleware' => ['auth', 'verified']], function() {
@@ -69,6 +63,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     // 用户评价与评分
     Route::get('orders/{order}/review', 'OrdersController@review')->name('orders.review.show');
     Route::post('orders/{order}/review', 'OrdersController@sendReview')->name('orders.review.store');
+
+    // 订单退款
+    Route::post('orders/{order}/apply_refund', 'OrdersController@applyRefund')->name('orders.apply_refund');
 
 });
 
