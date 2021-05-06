@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\OrderPaid;
+use App\Listeners\SendOrderPaidMail;
+use App\Listeners\UpdatePorductSolCount;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +21,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrderPaid::class => [
+            UpdatePorductSolCount::class,
+            SendOrderPaidMail::class,
+        ],
     ];
 
     /**
@@ -27,6 +34,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //event(new App\Events\OrderPaid(App\Models\Order::find(14)))
     }
 }
