@@ -89,6 +89,13 @@
           </div>
         </div>
 
+        @if(isset($order->extra['refund_disagree_reason']))
+        <div>
+          <span>拒绝退款理由：</span>
+          <div class="value">{{ $order->extra['refund_disagree_reason'] }}</div>
+        </div>
+        @endif
+
         <!-- 支付按钮开始 -->
         @if(!$order->paid_at && !$order->closed)
           <div class="payment-buttons">
@@ -123,7 +130,7 @@
 @section('scriptsAfterJs')
 <script>
   $(document).ready(function() {
-    
+
     // 微信支付按钮事件
     $('#btn-wechat').click(function() {
       swal({
