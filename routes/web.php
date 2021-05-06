@@ -60,14 +60,17 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('orders/{order}', 'OrdersController@show')->name('orders.show');
     // 订单支付 alipay
     Route::get('payment/{order}/alipay', 'PaymentController@payByAlipay')->name('payment.alipay');
-    // 客户端回调
+    // 客户端回调 alipay
     Route::get('payment/alipay/return', 'PaymentController@alipayReturn')->name('payment.alipay.return');
-
+    // 订单支付 微信
+    Route::get('payment/{order}/wechat', 'PaymentController@payByWechat')->name('payment.wechat');
 
 });
 
 // 服务端回调
 Route::post('payment/alipay/notify', 'PaymentController@alipayNotify')->name('payment.alipay.notify');
+Route::post('payment/wechat/notify', 'PaymentController@wechatNotify')->name('payment.wechat.notify');
+
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
