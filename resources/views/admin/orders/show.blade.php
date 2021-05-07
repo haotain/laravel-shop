@@ -47,7 +47,8 @@
       </tr>
       <!-- 订单发货开始 -->
       <!-- 如果订单未发货， 展示发货表单 -->
-      @if($order->ship_status == \App\Models\Order::SHIP_STATUS_PENDING)
+      @if($order->ship_status === \App\Models\Order::SHIP_STATUS_PENDING)
+        @if($order->refund_status !== \App\Models\Order::REFUND_STATUS_SUCCESS)
         <tr>
           <td colspan="4">
             <form action="/admin/orders/{{$order->id}}/ship" method="post" class="from-inline">
@@ -76,6 +77,7 @@
             </form>
           </td>
         </tr>
+        @endif
       @else
       <!-- 否则展示物流公司和物流单号 -->
       <tr>

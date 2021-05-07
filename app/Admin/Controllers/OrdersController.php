@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Exceptions\InternalException;
 use App\Exceptions\InvalidRequestException;
 use App\Http\Requests\Admin\HandleRefundRequest;
 use App\Http\Requests\Request;
@@ -110,7 +111,7 @@ class OrdersController extends AdminController
     }
 
     /**
-     * 拒绝退款
+     * 退款
      */
     public function handleRefund(Order $order, HandleRefundRequest $request)
     {
