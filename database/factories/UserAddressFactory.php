@@ -31,7 +31,7 @@ class UserAddressFactory extends Factory
         $address = $this->faker->randomElement($addresses);
 
         return [
-            'user_id'       => $this->faker->randomElement([1,2,3,4,5]),
+            // 'user_id'       => $this->faker->randomElement([1,2,3,4,5]),
             'province'      => $address[0],
             'city'          => $address[1],
             'district'      => $address[2],

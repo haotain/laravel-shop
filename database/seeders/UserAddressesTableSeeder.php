@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use App\Models\UserAddress;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,9 @@ class UserAddressesTableSeeder extends Seeder
      */
     public function run()
     {
-        UserAddress::factory()->count(20)->create();
+        User::all()->each(function(User $user) {
+            UserAddress::factory()->count(random_int(1,3))->create(['user_id' => $user->id]);
+        });
+
     }
 }
