@@ -47,6 +47,7 @@ class OrderService
             foreach ($items as $data) {
                 $sku  = ProductSku::find($data['sku_id']);
                 // 创建一个 OrderItem 并直接与当前订单关联
+                // 这个方法等同于 $item = new OrderItem(); $item->order()->associate($order);
                 $item = $order->items()->make([
                     'amount' => $data['amount'],
                     'price'  => $sku->price,
