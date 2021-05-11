@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             UserAddressesTableSeeder::class,
             ProductsTableSeeder::class,
-            CouponCodeTableSeeder::class
+            CouponCodeTableSeeder::class,
+            OrdersTableSeeder::class
         ]);
 
     }
