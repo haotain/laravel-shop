@@ -7,7 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 
-class OrdersSeeder extends Seeder
+class OrdersTableSeeder extends Seeder
 {
     public function run()
     {

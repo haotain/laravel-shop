@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             UserAddressesTableSeeder::class,
             ProductsTableSeeder::class,
             CouponCodeTableSeeder::class,
-            OrdersTableSeeder::class
+            OrdersTableSeeder::class,
+            AdminTablesSeeder::class,
         ]);
 
     }
