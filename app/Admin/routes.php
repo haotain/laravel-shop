@@ -15,6 +15,11 @@ Route::group([
 
     $router->get('users', 'UsersController@index');
 
+    // 商品类目
+    $router->get('/categories', 'CategoriesController@index')->name('amdin.categories.index');
+    $router->get('/categories/create', 'CategoriesController@create')->name('admin.categories.create');
+    $router->get('/categories/{id}/eidt', 'CategoriesController@edit')->name('admin.categories.eidt');
+
     $router->get('products', 'ProductsController@index');
     $router->get('products/create', 'ProductsController@create');
     $router->post('products', 'ProductsController@store');
