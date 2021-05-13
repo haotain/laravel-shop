@@ -86,14 +86,15 @@ class CategoriesController extends AdminController
     {
         $search = $request->input('q');
         $result = Category::query()
-            ->where('is_directiry', true) // 由于这里选择的是父类目，因此需要限定 is_directory 为 true
+            ->where('is_directory', true) // 由于这里选择的是父类目，因此需要限定 is_directory 为 true
             ->where('name', 'like', '%' . $search . '%')
             ->paginate();
 
         // 把查询出来的结果重新组装成 Laravel-Admin 需要的格式
-
         $result->setCollection($result->getCollection()->map(function (Category $category) {
             return ['id' => $category->id, 'text' => $category->full_name];
         }));
+
+        return $result;
     }
 }
