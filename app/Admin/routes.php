@@ -20,6 +20,8 @@ Route::group([
     $router->get('categories/create', 'CategoriesController@create');
     $router->post('categories', 'CategoriesController@store');
     $router->get('categories/{id}/edit', 'CategoriesController@edit');
+    $router->put('categories/{id}', 'CategoriesController@update');
+    $router->delete('categories/{id}', 'CategoriesController@destroy');
     $router->get('api/categories', 'CategoriesController@apiIndex');
 
     $router->get('products', 'ProductsController@index');
