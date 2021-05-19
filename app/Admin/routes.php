@@ -44,4 +44,11 @@ Route::group([
     $router->put('coupon_codes/{id}', 'CouponCodesController@update');
     $router->delete('coupon_codes/{id}', 'CouponCodesController@destroy');
 
+    // 众筹
+    $router->get('crowdfunding_products', 'CrowdfundingProductsController@index');
+    $router->get('crowdfunding_products/create', 'CrowdfundingProductsController@create');
+    $router->post('crowdfunding_products', 'CrowdfundingProductsController@store');
+    $router->get('crowdfunding_products/{id}/edit', 'CrowdfundingProductsController@edit');
+    $router->put('crowdfunding_products/{id}', 'CrowdfundingProductsController@update');
+
 });
