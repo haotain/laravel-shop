@@ -89,4 +89,25 @@ class OrderService
 
         return $order;
     }
+
+    public function crowdfunding(User $user, UserAddress $address, ProductSku $sku, $amount)
+    {
+        $order = \DB::transaction(function() use($amount, $sku, $user, $address) {
+            $address->update(['last_used_at' => Carbon::new()]);
+
+            $order = new Order([
+                'address' => [
+                    'address'       => $address->full_address,
+                    'zip'           => $address->zip,
+                    'contact_name'  => $address->contact_name,
+                    'contact_phone' => $address->contact_phone
+                ],
+                'remark'        => '',
+                'total_amount'  => $sku->price * $amount
+            ]);
+        });
+
+        $order->user()->associate($user);
+        $order->save();
+    }
 }
