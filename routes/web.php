@@ -66,6 +66,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('orders/{order}/apply_refund', 'OrdersController@applyRefund')->name('orders.apply_refund');
     // 检查优惠卷
     Route::get('coupon_codes/{code}', 'CouponCodesController@show')->name('coupon_codes.show');
+    // 众筹
+    Route::post('crowdfunding_oraders', 'OrdersController@crowdfunding')->name('crowdfunding_orders.store');
 
 });
 
