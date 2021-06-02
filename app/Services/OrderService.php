@@ -94,7 +94,7 @@ class OrderService
     {
         $order = \DB::transaction(function() use($amount, $sku, $user, $address) {
             // 更新地址最后使用时间
-            $address->update(['last_used_at' => Carbon::new()]);
+            $address->update(['last_used_at' => Carbon::now()]);
             // 创建一个订单
             $order = new Order([
                 'address' => [
@@ -126,10 +126,10 @@ class OrderService
         });
 
         // 众筹结束时间减去当前时间得到剩余秒数
-        $crowdfundingTlt = $sku->product->crowdfunding->end_at->getTimestamp() - time();
+        $crowdfundingTtl = $sku->product->crowdfunding->end_at->getTimestamp() - time();
 
         // 剩余秒数与默认订单关闭时间取较小值作为订单关闭时间
-        dispatch(new CloseOrder($order, min(config('app.order_ttl'), $crowdfundingTlt)));
+        dispatch(new CloseOrder($order, min(config('app.order_ttl'), $crowdfundingTtl)));
 
         return $order;
     }

@@ -28,7 +28,6 @@ class CrowdfundingProduct extends Model
         'end_at'
     ];
 
-  
     protected $casts = [
         'end_at' => 'date',
     ];

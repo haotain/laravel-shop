@@ -17,7 +17,7 @@ class CrowdFundingOrderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -56,7 +56,7 @@ class CrowdFundingOrderRequest extends FormRequest
             'amount' => ['required', 'integer', 'min:1'],
             'address_id' => [
                 'required',
-                Rule::exists('user_address', 'id')->where('user_id', $this->user()->id),            ]
+                Rule::exists('user_addresses', 'id')->where('user_id', $this->user()->id),            ]
         ];
     }
 }

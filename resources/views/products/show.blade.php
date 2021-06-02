@@ -236,7 +236,7 @@
         return;
       }
       // 把用户的收获地址以 JSON 的形式放入页面， 赋值给 address 变量
-      let addresses = {!! json_encode(Auth::check() ? Auth::user()->addresses : []) !!};
+      let addresses = {!! json_encode(Auth::check() ? Auth::user()->addresses: []) !!};
       console.log(addresses);
       // 使用 jQuery 动态创建一个表单
       let $form = $('<form></form>');
@@ -247,10 +247,12 @@
         '<select class="custom-select" name="address_id"></select>' +
         '</div></div>');
       // 循环每个收货地址
-      addresses.forEach(function(address) {
-        // 把当前收货地址添加到收货地址下拉框选项中
-        $form.find('selsect[name=address_id]').append('<option value="' + address.id + '">' +
-          address.full_address + ' ' + address.contact_name + ' ' + address.contact_phone + '/<option>');
+      addresses.forEach(function (address) {
+          // 把当前收货地址添加到收货地址下拉框选项中
+          $form.find('select[name=address_id]')
+            .append("<option value='" + address.id + "'>" +
+              address.full_address  + ' ' + address.contact_name + ' ' + address.contact_phone +
+              '</option>');
       });
       // 在表单中添加一个名为 购买数量的输入框
       $form.append('<div class="form-group row">' +
@@ -299,7 +301,7 @@
           })
         })
 
-    })
+    });
 
   });
 
