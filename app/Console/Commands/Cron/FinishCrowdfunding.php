@@ -69,6 +69,7 @@ class FinishCrowdfunding extends Command
 
     protected function crowdfundingFailed(CrowdfundingProduct $crowdfunding)
     {
+        echo CrowdfundingProduct::STATUS_FAIL.PHP_EOL;
         // 将众筹状态改为失败
         $crowdfunding->update([
             'status' => CrowdfundingProduct::STATUS_FAIL

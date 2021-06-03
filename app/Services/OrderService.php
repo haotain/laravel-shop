@@ -143,7 +143,7 @@ class OrderService
     /**
      * 订单退款
      */
-    protected function refundOrder(Order $order)
+    public function refundOrder(Order $order)
     {
         // 生成一个退款订单号
         $refundNo = Order::getAVailableRefundNo();

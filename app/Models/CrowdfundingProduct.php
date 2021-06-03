@@ -25,7 +25,8 @@ class CrowdfundingProduct extends Model
         'total_amount',
         'target_amount',
         'user_count',
-        'end_at'
+        'end_at',
+        'status'
     ];
 
     protected $casts = [
