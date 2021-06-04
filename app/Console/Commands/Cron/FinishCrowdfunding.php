@@ -58,10 +58,12 @@ class FinishCrowdfunding extends Command
                     $this->crowdfundingSucceed($crowdfunding);
                 }
             });
+
     }
 
     protected function crowdfundingSucceed(CrowdfundingProduct $crowdfunding)
     {
+        echo CrowdfundingProduct::STATUS_SUCCESS.PHP_EOL;
         $crowdfunding->update([
             'status' => CrowdfundingProduct::STATUS_SUCCESS
         ]);
