@@ -174,7 +174,7 @@ class PaymentController extends Controller
     /**
      * 分期付款接口
      */
-    public function payByInsatallment(Order $order, Request $request)
+    public function payByInstallment(Order $order, Request $request)
     {
         // 判断订单是否属于当前用户
         $this->authorize('own', $order);
@@ -223,8 +223,8 @@ class PaymentController extends Controller
             if ($i === $count - 1) {
                 $base = bcsub($order->total_amount, bcmul($base, ($count-1), 2), 2);
             }
-            $installment->items->create([
-                'sequece'  => $i,
+            $installment->items()->create([
+                'sequence' => $i,
                 'base'     => $base,
                 'fee'      => $fee,
                 'due_date' => $dueDate,
