@@ -10,7 +10,7 @@ class Installment extends Model
     use HasFactory;
 
     const STATUS_PENDING = 'pending';
-    const STATUS_REPAYING = 'REPAYING';
+    const STATUS_REPAYING = 'repaying';
     const STATUS_FINISHED = 'finished';
 
     public static $statusMap = [

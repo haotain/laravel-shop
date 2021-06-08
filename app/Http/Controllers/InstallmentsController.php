@@ -53,7 +53,7 @@ class InstallmentsController extends Controller
             throw new InvalidRequestException('该分期订单已结清');
         }
         // 获取当前分期付款最近的一个未支付的还款计划
-        if (!$nextItem = $installment->items()->wehreNull('paid_at')->orderBy('sequence')->first()) {
+        if (!$nextItem = $installment->items()->whereNull('paid_at')->orderBy('sequence')->first()) {
              // 如果没有未支付的还款，原则上不可能，因为如果分期已结清则在上一个判断就退出了
              throw new InvalidRequestException('该分期订单已结清');
         }
@@ -91,7 +91,7 @@ class InstallmentsController extends Controller
         // 校验支付宝回调参数是否正确
         $data = app('alipay')->verify();
         // 如果订单状态不是成功或者结束，则不走后续的逻辑
-        if (!in_array($data->trage_status, ['TRADE-SUCCESS', 'TRADE_FINISHED'])) {
+        if (!in_array($data->trade_status, ['TRADE_SUCCESS', 'TRADE_FINISHED'])) {
             return app('alipay')->success();
         }
 
