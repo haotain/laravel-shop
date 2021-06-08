@@ -57,7 +57,7 @@ class InstallmentItem extends Model
     /**
      * 返回当前还款计划是否已经预期
      */
-    public function getIsOverducAttribut()
+    public function getIsOverdueAttribute()
     {
         return Carbon::now()->gt($this->due_date);
     }
