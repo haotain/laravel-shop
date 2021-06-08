@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('installments/{installment}/alipay', 'InstallmentsController@payByAlipay')->name('installments.alipay');
      // 分期付款前端回调
     Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');
+    // 分期付款支付 微信支付
+    Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat');
 
 });
 
@@ -87,8 +89,12 @@ Route::post('payment/wechat/notify', 'PaymentController@wechatNotify')->name('pa
 // 微信退款回调
 Route::post('payment/wechat/refund_notify', 'PaymentController@wechatRefundNotify')->name('payment.wechat.refund_notify');
 
-// 分期付款后端回调
+
+// 分期付款后端回调 支付宝
 Route::post('installments/alipay/notify', 'InstallmentsController@alipayNotify')->name('installments.alipay.notify');
+// 分期付款后端回调 微信
+Route::post('installments/wechat/notify', 'InstallmentsController@wechatNotify')->name('installments.wechat.notify');
+
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
