@@ -75,7 +75,7 @@ class RefundInstallmentOrder implements ShouldQueue
                 app('wechat_pay')->refund([
                     'transaction_id' => $item->payment_no, //使用微信订单号来退款
                     'total_fee'      => $item->total * 100, // 原订单金额，单位分
-                    'refund_fee'     => $item->bash * 100, // 要退款的订单金额， 单位分， 分期付款的退款只能退本金
+                    'refund_fee'     => $item->base * 100, // 要退款的订单金额， 单位分， 分期付款的退款只能退本金
                     'out_refund_no'  => $refundNo, // 退款订单号
                     // 微信支付的退款结果并不是实时返回的，而是通过退款回调来通知，因此这里需要配上退款回调接口地址
                     'notify_url'     => ngrok_url('installments.wechat.refund_notify'),
@@ -88,7 +88,7 @@ class RefundInstallmentOrder implements ShouldQueue
             case 'alipay':
                 $ret = app('alipay')->refund([
                     'trade_no'       => $item->payment_no, // 这里使用支付宝交易号来退款
-                    'refund_amount'  => $item->bash, // 退款金额，单位元， 只退回本金
+                    'refund_amount'  => $item->base, // 退款金额，单位元， 只退回本金
                     'out_request_no' => $refundNo, // 退款订单号
                 ]);
                 // 根据支付宝文档，如果返回值里有 sub_code 字段说明退款失败

@@ -53,6 +53,9 @@ class InstallmentsController extends Controller
         if ($installment->order->closed) {
             throw new InvalidRequestException('对应的商品订单已被关闭');
         }
+        if ($installment->order->refund_status !== Order::REFUND_STATUS_PENDING) {
+            throw new InvalidRequestException('该订单已经申请过退款，请勿重复申请');
+        }
         if ($installment->status === Installment::STATUS_FINISHED) {
             throw new InvalidRequestException('该分期订单已结清');
         }
@@ -96,7 +99,9 @@ class InstallmentsController extends Controller
         if ($installment->order->closed) {
             throw new InvalidRequestException('对应的商品订单已被关闭');
         }
-
+        if ($installment->order->refund_status !== Order::REFUND_STATUS_PENDING) {
+            throw new InvalidRequestException('该订单已经申请过退款，请勿重复申请');
+        }
         if ($installment->status === Installment::STATUS_FINISHED); {
             throw new InvalidRequestException('该分期已结清');
         }
@@ -225,7 +230,7 @@ class InstallmentsController extends Controller
                 'refund_status' => InstallmentItem::REFUND_STATUS_SUCCESS,
             ]);
             $item->installment->refreshRefundStatus();
-            
+
         } else {
             // 否则将对应还款计划的退款状态改为退款失败
             $item->update([
