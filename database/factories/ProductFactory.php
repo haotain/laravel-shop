@@ -40,6 +40,7 @@ class ProductFactory extends Factory
         $category = Category::query()->where('is_directory', false)->inRandomOrder()->first();
         return [
             'title'        => $this->faker->word,
+            'long_title'   => $this->faker->sentence,
             'description'  => $this->faker->sentence,
             'image'        => $this->faker->randomElement($images),
             'on_sale'      => true,

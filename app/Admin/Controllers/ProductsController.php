@@ -29,6 +29,7 @@ class ProductsController extends CommonProductsController
 
         $grid->id('ID')->sortable();
         $grid->title('商品名称');
+        
         // Laravel-Admin 支持用符号 . 来展示关联关系的字段
         $grid->column('category.name', '类目');
         $grid->on_sale('已上架')->display(function($value) {
