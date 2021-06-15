@@ -38,37 +38,65 @@ class SyncProducts extends Command
      */
     public function handle()
     {
+        $this->create();
+        // $this->delete();
+    }
+
+    protected function create()
+    {
         $es = app('es');
 
         Product::query()
-            // 预加载 SKU 和 商品属性数据，避免 N + 1 问题
-            ->with(['skus', 'properties'])
-            // 使用 chunkById 避免一次性加载过多数据
-            ->chunkById(100, function($products) use($es) {
-                $this->info(sprintf('正在同步 ID 范围 为 %s 至 %s 的商品', $products->first()->id, $products->last()->id));
-                // 初始化 请求体
-                $req = ['body' => []];
-                // 遍历商品
-                foreach ($products as $product) {
-                    // 将商品模型转换为 Elastricsearch 所用的数组
-                    $data = $product->toESArray();
-                    $req['body'][] = [
-                        'index' => [
-                            '_index' => 'products',
-                            '_id'    => $data['id']
-                        ]
-                    ];
-                    $req['body'][] = $data;
-                }
+        // 预加载 SKU 和 商品属性数据，避免 N + 1 问题
+        ->with(['skus', 'properties'])
+        // 使用 chunkById 避免一次性加载过多数据
+        ->chunkById(100, function($products) use($es) {
+            $this->info(sprintf('正在同步 ID 范围 为 %s 至 %s 的商品', $products->first()->id, $products->last()->id));
+            // 初始化 请求体
+            $req = ['body' => []];
+            // 遍历商品
+            foreach ($products as $product) {
+                // 将商品模型转换为 Elastricsearch 所用的数组
+                $data = $product->toESArray();
+                $req['body'][] = [
+                    'index' => [
+                        '_index' => 'products',
+                        '_id'    => $data['id']
+                    ]
+                ];
+                $req['body'][] = $data;
+            }
 
+            try {
+                // 使用 bulk 方法批量创建
+                $es->bulk($req);
+            } catch (\Exception $e) {
+                $this->error($e->getMessage());
+            }
+        });
+    $this->info('同步完成');
+    }
+
+
+    protected function delete()
+    {
+        $es = app('es');
+
+        Product::query()
+        ->chunkById(100, function($products) use($es) {
+            $this->info(sprintf('正在删除 ID 范围 为 %s 至 %s 的商品', $products->first()->id, $products->last()->id));
+
+            foreach ($products as $product) {
                 try {
                     // 使用 bulk 方法批量创建
-                    $es->bulk($req);
+                    $es->delete(['index' => 'product', 'id' => $product->id]);
                 } catch (\Exception $e) {
                     $this->error($e->getMessage());
                 }
-            });
-        $this->info('同步完成');
+            }
+        });
+        $this->info('删除完成');
+
     }
 
 }
