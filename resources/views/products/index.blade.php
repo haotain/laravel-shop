@@ -9,6 +9,8 @@
         <div class="card-body">
           <!-- 筛选组件开始 -->
           <form action="{{ route('products.index') }}" class="search-form">
+            <!-- 创建一个隐藏字段 -->
+            <input type="hidden" name="filters">
             <div class="form-row">
 
               <div class="col-md-9">
@@ -32,6 +34,16 @@
                         <!-- 当前类目的 ID，当用户调整排序方式时，可以保证 category_id 参数不丢失 -->
                         <input type="hidden" name="category_id" value="{{ $category->id }}">
                       @endif
+                      <!-- 商品属性面包屑开始 -->
+                      <!-- 遍历当前属性筛选条件 -->
+                      @foreach ($propertyFilters as $name => $value)
+                        <sapn class="filter">{{ $name }}:
+                          <span class="filter-value">{{ $value }}</span>
+                          <!-- 调用之后定义的 removeFilterFormQuery -->
+                          <a class="remove-filter" href="javascript:removeFilterFormQuery('{{ $name }}')">x</a>
+                        </sapn>
+                      @endforeach
+                      <!-- 商品属性面包屑结束 -->
                     </div>
                     <!-- 面包屑结束 -->
                   <div class="col-auto">
@@ -81,7 +93,7 @@
               <div class="col-9 filter-values">
                 <!-- 遍历属性值列表 -->
                 @foreach($property['values'] as $value)
-                  <a href="javascript: appendFilterToQuery('{{ $property['key'] }}', {{ $value }})">{{ $value }}</a>
+                  <a href="javascript:appendFilterToQuery('{{ $property['key'] }}', '{{ $value }}')">{{ $value }}</a>
                 @endforeach
               </div>
             </div>
@@ -120,13 +132,27 @@
     $('.search-form input[name=search]').val(filters.search);
     $('.search-form select[name=order]').val(filters.order);
 
+    // $('.search-form select[name=order]').on('change', function() {
+    //   $('.search-form').submit();
+    // })
+
+    // 之前监听的切换排序方式事件
     $('.search-form select[name=order]').on('change', function() {
+      // 解析当前查询参数
+      let searches = parseSearch();
+      // 如果有属性筛选
+      if (searches['filters']) {
+        // 将属性筛选值放入隐藏字段中
+        $('.search-form input[name=filters]').val(searches['filters']);
+      }
       $('.search-form').submit();
-    })
+    });
+    
   })
 
   // 定义一个函数， 用于解析当前url 里的参数， 并以 key-value 对象形式返回
   function parseSearch() {
+    console.log(location.search)
     // 初始化一个空对象
     const searches = {};
     // location.search 会返回 Url 中 ? 以及后面的查询参数
@@ -137,7 +163,7 @@
       // 将数组的第一个值解码之后作为key, 第二个值解码后作为 value 放到之前初始化的对象中
       searches[decodeURIComponent(result[0])] = decodeURIComponent(result[1]);
     });
-
+    console.log(searches);
     return searches;
   }
 
@@ -146,7 +172,7 @@
     // 初始化字符串
     let query = '?';
     // 遍历searches 对象
-    _.forEach(searches, function(value, $key) {
+    _.forEach(searches, function(value, key) {
       query += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
     });
     // 去除最末尾的 & 符号
@@ -155,6 +181,7 @@
 
   // 将新的 filter 追加到当前的 Url 中
   function appendFilterToQuery(name, value) {
+
     // 解析当前 URL 的查询参数
     let searches = parseSearch();
     // 如果已经有了 filters 查询
@@ -165,8 +192,39 @@
       // 否则初始化 filters
       searches['filters'] = name + ':' + value;
     }
+    console.log(buildSearch(searches));
     // 重新构建查询参数， 并触发浏览器跳转
     location.search = buildSearch(searches);
+  }
+
+  // 将某个属性 filter 从 当前查询中移除
+  function removeFilterFormQuery(name) {
+    // 解除当前 Url 的查询参数
+    let searches = parseSearch();
+    // 如果没有 filters 查询则什么都不做
+    if (!searches['filters']) {
+      return;
+    }
+
+    // 初始化一个空数组
+    let filters = [];
+    // 将 filters 字符串拆解
+    searches['filters'].split('|').forEach(function (filter) {
+      // 解析出属性名和属性值
+      let result = filter.split(':');
+      // 如果当前属性名与要移除的属性名一致，则退出
+      if (result[0] === name) {
+        return;
+      }
+      console.log(filters)
+      // 否则将这个 filter 放入之前初始化的数组中
+      filters.push(filter);
+    });
+    // 重建 filters 查询
+    searches['filters'] = filters.join('|');
+    // 重新构建查询参数，并触发浏览器跳转
+    location.search = buildSearch(searches);
+    return;
   }
 </script>
 @endsection

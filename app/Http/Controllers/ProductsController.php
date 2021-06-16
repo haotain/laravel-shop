@@ -178,6 +178,7 @@ class ProductsController extends Controller
             ],
             'category' => $category ?? null,
             'properties' => $properties,
+            'propertyFilters' => $propertyFilters,
         ]);
     }
 
