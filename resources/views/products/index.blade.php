@@ -81,7 +81,7 @@
               <div class="col-9 filter-values">
                 <!-- 遍历属性值列表 -->
                 @foreach($property['values'] as $value)
-                  <a href="javascript:;">{{ $value }}</a>
+                  <a href="javascript: appendFilterToQuery('{{ $property['key'] }}', {{ $value }})">{{ $value }}</a>
                 @endforeach
               </div>
             </div>
@@ -124,6 +124,37 @@
       $('.search-form').submit();
     })
   })
+
+  // 定义一个函数， 用于解析当前url 里的参数， 并以 key-value 对象形式返回
+  function parseSearch() {
+    // 初始化一个空对象
+    const searches = {};
+    // location.search 会返回 Url 中 ? 以及后面的查询参数
+    // substr(1) 将 ? 去除，然后以符号 & 分割成数组，然后遍历这个数组
+    location.search.substr(1).split('&').forEach(function(str) {
+      // 将字符串以符号 = 分割成数组
+      let result = str.split('=');
+      // 将数组的第一个值解码之后作为key, 第二个值解码后作为 value 放到之前初始化的对象中
+      searches[decodeURIComponent(result[0])] = decodeURIComponent(result[1]);
+    });
+
+    return searches;
+  }
+
+  // 根据 key-value 对象构建查询参数
+  function buildSearch(searches) {
+    // 初始化字符串
+    let query = '?';
+    // 遍历searches 对象
+    _.forEach(searches, function(value, $key) {
+      query += encodeURIComponent(key) + '=' encodeURIComponent(value) + '&';
+    });
+    // 去除最末尾的 & 符号
+    return query.substr(0, query.length-1);
+  }
+
+  // 将新的 filter 追加到当前的 Url 中
+
 </script>
 @endsection
 
