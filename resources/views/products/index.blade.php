@@ -147,14 +147,27 @@
     let query = '?';
     // 遍历searches 对象
     _.forEach(searches, function(value, $key) {
-      query += encodeURIComponent(key) + '=' encodeURIComponent(value) + '&';
+      query += encodeURIComponent(key) + '=' + encodeURIComponent(value) + '&';
     });
     // 去除最末尾的 & 符号
     return query.substr(0, query.length-1);
   }
 
   // 将新的 filter 追加到当前的 Url 中
-
+  function appendFilterToQuery(name, value) {
+    // 解析当前 URL 的查询参数
+    let searches = parseSearch();
+    // 如果已经有了 filters 查询
+    if (searches['filters']) {
+      // 则在已有的 filters 后追加
+      searches['filters'] += '|' + name + ':' + value;
+    } else {
+      // 否则初始化 filters
+      searches['filters'] = name + ':' + value;
+    }
+    // 重新构建查询参数， 并触发浏览器跳转
+    location.search = buildSearch(searches);
+  }
 </script>
 @endsection
 
