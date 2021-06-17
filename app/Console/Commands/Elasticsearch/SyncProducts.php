@@ -12,7 +12,7 @@ class SyncProducts extends Command
      *
      * @var string
      */
-    protected $signature = 'es:sync-products {--delete}';
+    protected $signature = 'es:sync-products {--index=products}';
 
     /**
      * The console command description.
@@ -38,9 +38,8 @@ class SyncProducts extends Command
      */
     public function handle()
     {
-        if ($this->option('delete')) {
-            return $this->delete();
-        }
+        // return $this->delete();
+
         return $this->create();
     }
 
@@ -62,7 +61,7 @@ class SyncProducts extends Command
                 $data = $product->toESArray();
                 $req['body'][] = [
                     'index' => [
-                        '_index' => 'products',
+                        '_index' => $this->option('index'),
                         '_id'    => $data['id']
                     ]
                 ];
