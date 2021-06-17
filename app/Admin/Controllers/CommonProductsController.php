@@ -17,6 +17,7 @@ abstract class CommonProductsController extends AdminController
 
     protected function grid()
     {
+        
         $grid = new Grid(new Product());
 
         // 筛选出当前类型的商品，默认 ID 倒序排序
@@ -28,7 +29,7 @@ abstract class CommonProductsController extends AdminController
             return $value ? '是' : '否';
         });
         $grid->price('价格');
-        
+
         // 调用自定义方法
         $this->customGrid($grid);
 

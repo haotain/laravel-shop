@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Controllers;
+namespace App\Admin\Controllers;
 
 use App\Admin\Controllers\CommonProductsController;
 use App\Models\Product;
@@ -17,6 +17,7 @@ class SeckillProductsController extends CommonProductsController
 
     protected function customGrid(Grid $grid)
     {
+
         // $grid->id('ID')->sortable();
         // $grid->title('商品名称');
         // $grid->on_sale('已上架')->display(function ($value) {
@@ -30,6 +31,7 @@ class SeckillProductsController extends CommonProductsController
 
     protected function customForm(Form $form)
     {
+        // var_dump(public_path('storage') , storage_path('app/public'));die;
         // 秒杀相关字段
         $form->datetime('seckill.start_at', '秒杀开始时间')->rules('required|date');
         $form->datetime('seckill.end_at', '秒杀结束时间')->rules('required|date');
