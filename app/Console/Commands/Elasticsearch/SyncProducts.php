@@ -12,7 +12,7 @@ class SyncProducts extends Command
      *
      * @var string
      */
-    protected $signature = 'es:sync-products';
+    protected $signature = 'es:sync-products {--delete}';
 
     /**
      * The console command description.
@@ -38,8 +38,10 @@ class SyncProducts extends Command
      */
     public function handle()
     {
-        $this->create();
-        // $this->delete();
+        if ($this->option('delete')) {
+            return $this->delete();
+        }
+        return $this->create();
     }
 
     protected function create()

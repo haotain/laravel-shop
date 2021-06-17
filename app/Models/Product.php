@@ -49,6 +49,11 @@ class Product extends Model
         return $this->hasMany(ProductProperty::class);
     }
 
+    public function scopeByIds($query, $ids)
+    {
+        return $query->whereIn('id', $ids)->orderByRaw(sprintf("FIND_IN_SET(id, '%s')", join(',', $ids)));
+    }
+
 
     public function getImageUrlAttribute()
     {

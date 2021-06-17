@@ -5,7 +5,9 @@ use App\Models\Category;
 
 class ProductSearchBuilder
 {
-    // 初始化查询
+    /**
+     * 初始化查询
+    */
     protected $params = [
         'index' => 'products',
         'type'  => '_doc',
@@ -19,7 +21,10 @@ class ProductSearchBuilder
         ],
     ];
 
-    // 添加分页查询
+
+    /**
+     * 添加分页查询
+     */
     public function paginate($size, $page)
     {
         $this->params['body']['from'] = ($page - 1) * $size;
@@ -28,7 +33,9 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 筛选上架状态的商品
+    /**
+     *  筛选上架状态的商品
+     */
     public function onSale()
     {
         $this->params['body']['query']['bool']['filter'][] = ['term' => ['on_sale' => true]];
@@ -36,7 +43,9 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 按类目筛选商品
+    /**
+     * 按类目筛选商品
+     */
     public function category(Category $category)
     {
         if ($category->is_directory) {
@@ -50,7 +59,9 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 添加搜索词
+    /**
+     *  添加搜索词
+     */
     public function keywords($keywords)
     {
         // 如果参数不是数组则转为数组
@@ -75,7 +86,9 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 分面搜索的聚合
+    /**
+     *  分面搜索的聚合
+     */
     public function aggregateProperties()
     {
         $this->params['body']['aggs'] = [
@@ -103,10 +116,12 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 添加一个按商品属性筛选的条件
-    public function propertyFilter($name, $value)
+    /**
+     *  添加一个按商品属性筛选的条件
+     */
+    public function propertyFilter($name, $value, $type = 'filter')
     {
-        $this->params['body']['query']['bool']['filter'][] = [
+        $this->params['body']['query']['bool'][$type][] = [
             'nested' => [
                 'path'  => 'properties',
                 'query' => [
@@ -118,7 +133,19 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 添加排序
+    /**
+     *  设置 minimum_should_match 参数
+     */
+    public function minShouldMatch($count)
+    {
+        $this->params['body']['query']['bool']['minimum_should_match'] = (int)$count;
+
+        return $this;
+    }
+
+    /**
+     *  添加排序
+     */
     public function orderBy($field, $direction)
     {
         if (!isset($this->params['body']['sort'])) {
@@ -129,7 +156,9 @@ class ProductSearchBuilder
         return $this;
     }
 
-    // 返回构造好的查询参数
+    /**
+     *  返回构造好的查询参数
+     */
     public function getParams()
     {
         return $this->params;

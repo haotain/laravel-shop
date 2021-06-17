@@ -147,7 +147,7 @@
       }
       $('.search-form').submit();
     });
-    
+
   })
 
   // 定义一个函数， 用于解析当前url 里的参数， 并以 key-value 对象形式返回
@@ -224,7 +224,6 @@
     searches['filters'] = filters.join('|');
     // 重新构建查询参数，并触发浏览器跳转
     location.search = buildSearch(searches);
-    return;
   }
 </script>
 @endsection
