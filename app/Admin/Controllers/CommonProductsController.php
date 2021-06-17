@@ -21,6 +21,14 @@ abstract class CommonProductsController extends AdminController
 
         // 筛选出当前类型的商品，默认 ID 倒序排序
         $grid->model()->where('type', $this->getProductType())->orderBy('id', 'desc');
+
+        $grid->id('ID')->sortable();
+        $grid->title('商品名称');
+        $grid->on_sale('已上架')->dispaly(function($value) {
+            return $value ? '是' : '否';
+        });
+        $grid->price('价格');
+        
         // 调用自定义方法
         $this->customGrid($grid);
 
