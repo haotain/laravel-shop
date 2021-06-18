@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Shanghai',
 
     /*
     |--------------------------------------------------------------------------
@@ -231,7 +231,7 @@ return [
 
     ],
 
-    'order_ttl' => 1800,
+    'order_ttl' => 1800, // 关闭订单时间
     'ngrok_url' => env('NGROK_URL'),
 
     'installment_fee_rate' => [
@@ -241,4 +241,9 @@ return [
     ], // 分期费率， key 为期数， value 为费率
     'min_installlment_amount' => 300, // 最低分期金额
     'installment_fine_rate' => 0.05, // 逾期日息 0.05%
+
+    // 单位秒，秒杀订单的支付有效期通常要比普通订单要短
+    // 这里我们将其设为 10 分钟
+    'seckill_order_ttl' => 600,
+
 ];
