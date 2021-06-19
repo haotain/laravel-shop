@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/', 'PagesController@root')->name('root')->middleware('verified');
 
+// 秒杀商品下单
+Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store')->middleware('random_drop:80');
 
 // 增加verify 参数 邮箱验证
 Auth::routes(['verify' => true]);
@@ -80,8 +82,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('installments/alipay/return', 'InstallmentsController@alipayReturn')->name('installments.alipay.return');
     // 分期付款支付 微信支付
     Route::get('installments/{installment}/wechat', 'InstallmentsController@payByWechat')->name('installments.wechat');
-    // 秒杀商品下单
-    Route::post('seckill_orders', 'OrdersController@seckill')->name('seckill_orders.store');
+
 
 });
 

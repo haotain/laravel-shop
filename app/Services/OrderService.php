@@ -14,6 +14,7 @@ use App\Jobs\RefundInstallmentOrder;
 use App\Models\CouponCode;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class OrderService
 {
@@ -236,9 +237,9 @@ class OrderService
             $order = new Order([
                 'address' => [ // 将地址信息放入订单中
                     'address'       => $addressData['province'] . $addressData['city'] . $addressData['district'] . $addressData['address'],
-                    'zip'           => $addressData->zip,
-                    'contact_name'  => $addressData->contact_name,
-                    'contact_phone' => $addressData->contact_phone
+                    'zip'           => $addressData['zip'],
+                    'contact_name'  => $addressData['contact_name'],
+                    'contact_phone' => $addressData['contact_phone']
                 ],
                 'ramark'        => '',
                 'total_amount'  => $sku->price,
@@ -256,6 +257,8 @@ class OrderService
             $item->product()->associate($sku->product_id);
             $item->productSku()->associate($sku);
             $item->save();
+            // 将 Redis 中的库存 -1
+            Redis::decr('seckill_sku_' . $sku->id);
 
             return $order;
         });
