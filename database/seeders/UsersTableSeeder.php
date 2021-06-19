@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(5)->create();
+        User::factory()->count(100)->create();
 
         $user = User::find(1);
         $user->name = 'wsy';

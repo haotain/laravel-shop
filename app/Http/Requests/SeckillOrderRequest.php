@@ -28,10 +28,18 @@ class SeckillOrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'address_id' => [
-                'required',
-                Rule::exists('user_addresses', 'id')->where('user_id', $this->user()->id)
-            ],
+            // 'address_id' => [
+            //     'required',
+            //     Rule::exists('user_addresses', 'id')->where('user_id', $this->user()->id)
+            // ],
+            // 将原本的 address_id 删除。由于我们在订单中保存的是收货地址的具体信息而不是收货地址 ID，因此我们可以把秒杀接口的 address_id 参数替换成收货地址的详细信息，这样就可以避免掉这个 SQL 查询。
+            'address.province'      => 'required',
+            'address.city'          => 'required',
+            'address.district'      => 'required',
+            'address.address'       => 'required',
+            'address.zip'           => 'required',
+            'address.contact_name'  => 'required',
+            'address.contact_phone' => 'required',
             'sku_id' => [
                 'required',
                 function ($attribute, $value, $fail) {
